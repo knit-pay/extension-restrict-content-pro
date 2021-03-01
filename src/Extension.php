@@ -46,7 +46,7 @@ class Extension extends AbstractPluginIntegration {
 		// Upgrades.
 		$upgrades = $this->get_upgrades();
 
-		$upgrades->add( new Upgrade216() );
+		//$upgrades->add( new Upgrade216() );
 	}
 
 	/**
@@ -191,7 +191,7 @@ class Extension extends AbstractPluginIntegration {
 			'label'       => $gateway->get_label(),
 			'admin_label' => sprintf(
 				'%s - %s',
-				__( 'Pronamic', 'pronamic_ideal' ),
+				__( 'Knit Pay', 'pronamic_ideal' ),
 				$label
 			),
 			'class'       => $class,
@@ -205,15 +205,14 @@ class Extension extends AbstractPluginIntegration {
 	 */
 	private function get_gateways() {
 		return array(
-			'pronamic_pay'                         => $this->get_gateway_data( __( 'Pay', 'pronamic_ideal' ), Gateway::class ),
-			'pronamic_pay_bancontact'              => $this->get_gateway_data( __( 'Bancontact', 'pronamic_ideal' ), BancontactGateway::class ),
+			'pronamic_pay'                         => $this->get_gateway_data( __( 'Default', 'pronamic_ideal' ), Gateway::class ),
+			//'pronamic_pay_bancontact'              => $this->get_gateway_data( __( 'Bancontact', 'pronamic_ideal' ), BancontactGateway::class ),
 			'pronamic_pay_banktransfer'            => $this->get_gateway_data( __( 'Bank Transfer', 'pronamic_ideal' ), BankTransferGateway::class ),
-			'pronamic_pay_bitcoin'                 => $this->get_gateway_data( __( 'Bitcoin', 'pronamic_ideal' ), BitcoinGateway::class ),
+			//'pronamic_pay_bitcoin'                 => $this->get_gateway_data( __( 'Bitcoin', 'pronamic_ideal' ), BitcoinGateway::class ),
 			'pronamic_pay_credit_card'             => $this->get_gateway_data( __( 'Credit Card', 'pronamic_ideal' ), CreditCardGateway::class ),
-			'pronamic_pay_direct_debit'            => $this->get_gateway_data( __( 'Direct Debit', 'pronamic_ideal' ), DirectDebitGateway::class ),
+			/* 'pronamic_pay_direct_debit'            => $this->get_gateway_data( __( 'Direct Debit', 'pronamic_ideal' ), DirectDebitGateway::class ),
 			'pronamic_pay_direct_debit_bancontact' => $this->get_gateway_data(
 				sprintf(
-					/* translators: %s: payment method */
 					__( 'Direct Debit (mandate via %s)', 'pronamic_ideal' ),
 					__( 'Bancontact', 'pronamic_ideal' )
 				),
@@ -221,7 +220,6 @@ class Extension extends AbstractPluginIntegration {
 			),
 			'pronamic_pay_direct_debit_ideal'      => $this->get_gateway_data(
 				sprintf(
-					/* translators: %s: payment method */
 					__( 'Direct Debit (mandate via %s)', 'pronamic_ideal' ),
 					__( 'iDEAL', 'pronamic_ideal' )
 				),
@@ -229,7 +227,6 @@ class Extension extends AbstractPluginIntegration {
 			),
 			'pronamic_pay_direct_debit_sofort'     => $this->get_gateway_data(
 				sprintf(
-					/* translators: %s: payment method */
 					__( 'Direct Debit (mandate via %s)', 'pronamic_ideal' ),
 					__( 'SOFORT', 'pronamic_ideal' )
 				),
@@ -237,7 +234,7 @@ class Extension extends AbstractPluginIntegration {
 			),
 			'pronamic_pay_ideal'                   => $this->get_gateway_data( __( 'iDEAL', 'pronamic_ideal' ), IDealGateway::class ),
 			'pronamic_pay_paypal'                  => $this->get_gateway_data( __( 'PayPal', 'pronamic_ideal' ), PayPalGateway::class ),
-			'pronamic_pay_sofort'                  => $this->get_gateway_data( __( 'SOFORT', 'pronamic_ideal' ), SofortGateway::class ),
+			'pronamic_pay_sofort'                  => $this->get_gateway_data( __( 'SOFORT', 'pronamic_ideal' ), SofortGateway::class ), */
 		);
 	}
 

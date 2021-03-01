@@ -58,7 +58,7 @@ class Gateway extends RCP_Payment_Gateway {
 	 */
 	public function init() {
 		$this->label       = $this->get_label();
-		$this->admin_label = PaymentMethods::get_name( $this->payment_method, __( 'Pronamic', 'pronamic_ideal' ) );
+		$this->admin_label = PaymentMethods::get_name( $this->payment_method, __( 'Knit Pay', 'pronamic_ideal' ) );
 
 		if ( PaymentMethods::is_direct_debit_method( $this->payment_method ) ) {
 			$this->supports = array(
@@ -98,7 +98,7 @@ class Gateway extends RCP_Payment_Gateway {
 	public function get_label() {
 		global $rcp_options;
 
-		$label = PaymentMethods::get_name( $this->payment_method, __( 'Pronamic', 'pronamic_ideal' ) );
+		$label = PaymentMethods::get_name( $this->payment_method, __( 'Knit Pay', 'pronamic_ideal' ) );
 
 		// Check options.
 		if ( ! \is_array( $rcp_options ) ) {
