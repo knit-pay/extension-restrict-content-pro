@@ -16,6 +16,7 @@ use Pronamic\WordPress\Pay\Payments\PaymentStatus as Core_PaymentStatus;
 use Pronamic\WordPress\Pay\Payments\Payment;
 use Pronamic\WordPress\Pay\Subscriptions\Subscription;
 use Pronamic\WordPress\Pay\Subscriptions\SubscriptionStatus;
+use Pronamic\WordPress\Money\Currencies;
 use RCP_Member;
 use RCP_Payments;
 use WP_Query;
@@ -46,7 +47,7 @@ class Extension extends AbstractPluginIntegration {
 		// Upgrades.
 		$upgrades = $this->get_upgrades();
 
-		//$upgrades->add( new Upgrade216() );
+		// $upgrades->add( new Upgrade216() );
 	}
 
 	/**
@@ -104,6 +105,10 @@ class Extension extends AbstractPluginIntegration {
 
 		add_action( 'rcp_edit_membership_after', array( $this, 'rcp_edit_membership_after' ) );
 		add_action( 'rcp_edit_payment_after', array( $this, 'rcp_edit_payment_after' ) );
+
+		// Added more supported Currencies.
+		add_filter( 'rcp_currencies', array( __CLASS__, 'rcp_currencies' ), 10, 1 );
+		add_filter( 'rcp_inr_symbol', array( __CLASS__, 'rcp_currency_symbol' ), 10, 2 );
 
 		/**
 		 * Filter the subscription next payment delivery date.
@@ -205,12 +210,14 @@ class Extension extends AbstractPluginIntegration {
 	 */
 	private function get_gateways() {
 		return array(
-			'pronamic_pay'                         => $this->get_gateway_data( __( 'Default', 'pronamic_ideal' ), Gateway::class ),
-			//'pronamic_pay_bancontact'              => $this->get_gateway_data( __( 'Bancontact', 'pronamic_ideal' ), BancontactGateway::class ),
-			'pronamic_pay_banktransfer'            => $this->get_gateway_data( __( 'Bank Transfer', 'pronamic_ideal' ), BankTransferGateway::class ),
-			//'pronamic_pay_bitcoin'                 => $this->get_gateway_data( __( 'Bitcoin', 'pronamic_ideal' ), BitcoinGateway::class ),
-			'pronamic_pay_credit_card'             => $this->get_gateway_data( __( 'Credit Card', 'pronamic_ideal' ), CreditCardGateway::class ),
-			/* 'pronamic_pay_direct_debit'            => $this->get_gateway_data( __( 'Direct Debit', 'pronamic_ideal' ), DirectDebitGateway::class ),
+			'pronamic_pay'              => $this->get_gateway_data( __( 'Default', 'pronamic_ideal' ), Gateway::class ),
+			// 'pronamic_pay_bancontact'              => $this->get_gateway_data( __( 'Bancontact', 'pronamic_ideal' ), BancontactGateway::class ),
+			'pronamic_pay_banktransfer' => $this->get_gateway_data( __( 'Bank Transfer', 'pronamic_ideal' ), BankTransferGateway::class ),
+			// 'pronamic_pay_bitcoin'                 => $this->get_gateway_data( __( 'Bitcoin', 'pronamic_ideal' ), BitcoinGateway::class ),
+			'pronamic_pay_credit_card'  => $this->get_gateway_data( __( 'Credit Card', 'pronamic_ideal' ), CreditCardGateway::class ),
+
+			/*
+			'pronamic_pay_direct_debit'            => $this->get_gateway_data( __( 'Direct Debit', 'pronamic_ideal' ), DirectDebitGateway::class ),
 			'pronamic_pay_direct_debit_bancontact' => $this->get_gateway_data(
 				sprintf(
 					__( 'Direct Debit (mandate via %s)', 'pronamic_ideal' ),
@@ -234,7 +241,8 @@ class Extension extends AbstractPluginIntegration {
 			),
 			'pronamic_pay_ideal'                   => $this->get_gateway_data( __( 'iDEAL', 'pronamic_ideal' ), IDealGateway::class ),
 			'pronamic_pay_paypal'                  => $this->get_gateway_data( __( 'PayPal', 'pronamic_ideal' ), PayPalGateway::class ),
-			'pronamic_pay_sofort'                  => $this->get_gateway_data( __( 'SOFORT', 'pronamic_ideal' ), SofortGateway::class ), */
+			'pronamic_pay_sofort'                  => $this->get_gateway_data( __( 'SOFORT', 'pronamic_ideal' ), SofortGateway::class ),
+			*/
 		);
 	}
 
@@ -910,5 +918,32 @@ class Extension extends AbstractPluginIntegration {
 		$date = $date->modify( '-1 day' );
 
 		return $date;
+	}
+
+	/**
+	 * Filter currencies.
+	 *
+	 * @param array $currencies Available currencies.
+	 *
+	 * @return array
+	 */
+	public static function rcp_currencies( $currencies ) {
+
+		$currencies['INR'] = __( 'Indian Rupee (&#8377;)', 'knit-pay' );
+		return $currencies;
+	}
+
+	/**
+	 * Filter Currency Symbol.
+	 *
+	 * @param string $symbol Currency Symbol.
+	 * @param string $currency Currency Code.
+	 *
+	 * @return array
+	 */
+	public static function rcp_currency_symbol( $symbol, $currency ) {
+
+		$currency = Currencies::get_currency( $currency );
+		return $currency->get_symbol();
 	}
 }
